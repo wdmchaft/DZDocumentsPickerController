@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Dropbox App Key</key>
+	<string>dtdtuudokkvl46f</string>
+	<key>Dropbox App Secret</key>
+	<string>cqfs13cx77v3q1d</string>
+	<key>SkyDrive Client ID</key>
+	<string>00000000440BCD39</string>
+	<key>SkyDrive Client Secret</key>
+	<string>QvELDKk5CgSdWrdB4eYdDxkepHjuKkr9</string>
+</dict>
+</plist>
