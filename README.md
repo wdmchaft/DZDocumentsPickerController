@@ -59,7 +59,7 @@ Call for DZDocumentsPickerControllerDelegate methods.
 
 DZDocumentsPickerController uses some official and unofficial Objective-C APIs to plug with cloud services, such as Dropbox, Cloud App and SkyDrive's:
 - Official Dropbox SDK for iOS (https://www.dropbox.com/developers/reference/sdk)
-- Forked version of the OpenSource Cloud App library (https://github.com/dzenbot/MSLiveSDK)
+- Forked version of the OpenSource Cloud App library (https://github.com/dzenbot/CloudAppSDK)
 - Forked version of the Official Microsoft LiveSDK for iOS (https://github.com/dzenbot/MSLiveSDK)
 
 DZDocumentsPickerController requires Apple's Reachability, but the ARC version from @tonymillion (https://github.com/tonymillion/Reachability)
