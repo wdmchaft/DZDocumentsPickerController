@@ -11,6 +11,7 @@
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 
+#import "DZServiceTableViewCell.h"
 #import "DZServicesManager.h"
 #import "DZDocument.h"
 #import "DZAlertCenter.h"

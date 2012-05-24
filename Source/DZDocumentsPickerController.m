@@ -35,7 +35,6 @@
     [super viewDidLoad];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(startCheckout) name:@"DROPBOX_LINKED" object:nil];
-    availableServices = [[NSArray alloc] initWithObjects:[NSNumber numberWithInt:ServiceTypeDropbox],[NSNumber numberWithInt:ServiceTypeCloudApp],nil];
     
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
     alrtCenter = [[DZAlertCenter alloc] init];
@@ -283,7 +282,6 @@
     else return RowHeight;
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
 	static NSString *CellIdentifier = @"Cell";
@@ -363,21 +361,9 @@
     {
         if (currentSegment == 1 && [depthLevel intValue] == 0)
         {
-            UIImageView *imgview = [[UIImageView alloc] initWithFrame:CGRectMake(self.contentSizeForViewInPopover.width/2-320/2,0,320, LargerRowHeight)];
-            NSString *cloudImgName = [NSString stringWithFormat:@"logo_%@.png",[[DZServicesManager servicesSupported] objectAtIndex:indexPath.row]];
-            imgview.image = [UIImage imageNamed:cloudImgName];
-            [cell.contentView addSubview:imgview];
-            
-            if ([self checkServiceSupport:indexPath.row])
-            {
-                cell.accessoryType = UITableViewCellAccessoryNone;
-                cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-            }
-            else
-            {
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                [imgview setAlpha:0.25];
-            }
+            cell = [self buildServiceCell:tableView withIndexPath:indexPath];
+            NSLog(@"cell = %@",cell.description);
+            return cell;
         }
         else if (currentSegment == 1 && indexPath.row == 2)
         {
@@ -404,6 +390,48 @@
         }
     }
 
+    return cell;
+}
+
+- (DZServiceTableViewCell *)buildServiceCell:(UITableView *)tableView withIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"DZServiceTableViewCell";
+    DZServiceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    if (cell == nil)
+    {
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"DZServiceTableViewCell" owner:nil options:nil];
+        
+        for(id currentObject in topLevelObjects)
+        {
+            if([currentObject isKindOfClass:[DZServiceTableViewCell class]])
+            {
+                cell = (DZServiceTableViewCell *)currentObject;
+                [cell setFrame:CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height)];
+                //[cell setClipsToBounds:YES];
+                break;
+            }
+        }
+    }
+    
+    NSString *cloudName = [[DZServicesManager servicesSupported] objectAtIndex:indexPath.row];
+    NSString *cloudImgName = [NSString stringWithFormat:@"logo_%@.png",cloudName];
+    cell.logoImgView.image = [UIImage imageNamed:cloudImgName];
+    //cell.textLabel.text = cloudName;
+    
+    NSLog(@"cloudImgName = %@",cloudImgName);
+    
+    if ([self checkServiceSupport:indexPath.row])
+    {
+        cell.accessoryType = UITableViewCellAccessoryNone;
+        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    }
+    else
+    {
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.logoImgView setAlpha:0.25];
+    }
+    
     return cell;
 }
 

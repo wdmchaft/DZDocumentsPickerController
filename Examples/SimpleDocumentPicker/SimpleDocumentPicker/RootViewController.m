@@ -27,6 +27,7 @@
     docPickerController.documentType = DocumentTypeImages;
     docPickerController.allowEditing = NO;
     docPickerController.delegate = self;
+    docPickerController.availableServices = [[NSArray alloc] initWithObjects:[NSNumber numberWithInt:ServiceTypeDropbox],[NSNumber numberWithInt:ServiceTypeCloudApp],nil];
     
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone)
     {
