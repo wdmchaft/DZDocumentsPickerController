@@ -1,3 +1,12 @@
-[submodule "DZEN_Categories"]
-	path = DZEN_Categories
+[submodule "Source/External/MSLiveSDK"]
+	path = Source/External/MSLiveSDK
+	url = git@github.com:dzenbot/MSLiveSDK.git
+[submodule "Source/External/CloudAppSDK"]
+	path = Source/External/CloudAppSDK
+	url = git@github.com:dzenbot/CloudAppSDK.git
+[submodule "Source/External/Reachability"]
+	path = Source/External/Reachability
+	url = https://github.com/tonymillion/Reachability.git
+[submodule "Source/External/DZEN_Categories"]
+	path = Source/External/DZEN_Categories
 	url = git@github.com:DZen-Interaktiv/DZEN_Categories.git
