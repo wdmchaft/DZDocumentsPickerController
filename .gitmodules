@@ -1,0 +1,3 @@
+[submodule "DZEN_Categories"]
+	path = DZEN_Categories
+	url = git@github.com:DZen-Interaktiv/DZEN_Categories.git
