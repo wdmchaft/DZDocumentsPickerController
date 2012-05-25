@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		F504C893156E9B5C002842A1 /* libCloud.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F504C892156E9B5C002842A1 /* libCloud.a */; };
 		F504CB51156E9B9A002842A1 /* CLAPIDeserializer.m in Sources */ = {isa = PBXBuildFile; fileRef = F504C896156E9B99002842A1 /* CLAPIDeserializer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F504CB52156E9B9A002842A1 /* CLAPISerializer.m in Sources */ = {isa = PBXBuildFile; fileRef = F504C898156E9B99002842A1 /* CLAPISerializer.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
 		F504CB53156E9B9A002842A1 /* NSMutableURLRequest+NPPOSTBody.m in Sources */ = {isa = PBXBuildFile; fileRef = F504C89B156E9B99002842A1 /* NSMutableURLRequest+NPPOSTBody.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
@@ -65,6 +64,9 @@
 		F55A00C1156EE0F500DB3760 /* Icon_512.png in Resources */ = {isa = PBXBuildFile; fileRef = F55A00BC156EE0F500DB3760 /* Icon_512.png */; };
 		F55A00C5156EE31400DB3760 /* DZServiceTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F55A00C4156EE31400DB3760 /* DZServiceTableViewCell.m */; };
 		F55A00C7156EE39E00DB3760 /* DZServiceTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F55A00C6156EE39D00DB3760 /* DZServiceTableViewCell.xib */; };
+		F55A00CD156F48E600DB3760 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5E1B3F3153CFEA300B46440 /* DropboxSDK.framework */; };
+		F55A00CE156F490600DB3760 /* LiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5D8FCC7156E9B2C0007D484 /* LiveSDK.framework */; };
+		F55A00CF156F560400DB3760 /* libCloud.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F504C892156E9B5C002842A1 /* libCloud.a */; };
 		F56BAE4A1550335A0058B1D2 /* logo_box.png in Resources */ = {isa = PBXBuildFile; fileRef = F56BAE481550335A0058B1D2 /* logo_box.png */; };
 		F56BAE4B1550335A0058B1D2 /* logo_box@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F56BAE491550335A0058B1D2 /* logo_box@2x.png */; };
 		F56BAE4E1550373D0058B1D2 /* logo_googledrive.png in Resources */ = {isa = PBXBuildFile; fileRef = F56BAE4C1550373D0058B1D2 /* logo_googledrive.png */; };
@@ -83,8 +85,6 @@
 		F5D8FCC2156E9A6F0007D484 /* UIView+DZEN.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D8FCB6156E9A6F0007D484 /* UIView+DZEN.m */; };
 		F5D8FCC3156E9A6F0007D484 /* UIWebView+DZEN.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D8FCB8156E9A6F0007D484 /* UIWebView+DZEN.m */; };
 		F5D8FCC6156E9A8A0007D484 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = F5D8FCC5156E9A8A0007D484 /* Reachability.m */; };
-		F5D8FCC8156E9B2C0007D484 /* LiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5D8FCC7156E9B2C0007D484 /* LiveSDK.framework */; };
-		F5E1B3F4153CFEA300B46440 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5E1B3F3153CFEA300B46440 /* DropboxSDK.framework */; };
 		F5E1B434153D071400B46440 /* DZAlertCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = F5E1B3F6153D002100B46440 /* DZAlertCenter.m */; };
 		F5E1B439153D074D00B46440 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5E1B437153D073600B46440 /* CFNetwork.framework */; };
 		F5E1B43A153D075100B46440 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5E1B435153D072D00B46440 /* Security.framework */; };
@@ -271,6 +271,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F55A00CF156F560400DB3760 /* libCloud.a in Frameworks */,
+				F55A00CE156F490600DB3760 /* LiveSDK.framework in Frameworks */,
+				F55A00CD156F48E600DB3760 /* DropboxSDK.framework in Frameworks */,
 				F5151F24154FA2F100BD003E /* MobileCoreServices.framework in Frameworks */,
 				F5C83B2B154EED8B00456D08 /* SystemConfiguration.framework in Frameworks */,
 				F5E1B43A153D075100B46440 /* Security.framework in Frameworks */,
@@ -278,9 +281,6 @@
 				F50F7B9C153CF1B900C14D7B /* UIKit.framework in Frameworks */,
 				F50F7B9E153CF1B900C14D7B /* Foundation.framework in Frameworks */,
 				F50F7BA0153CF1B900C14D7B /* CoreGraphics.framework in Frameworks */,
-				F5E1B3F4153CFEA300B46440 /* DropboxSDK.framework in Frameworks */,
-				F5D8FCC8156E9B2C0007D484 /* LiveSDK.framework in Frameworks */,
-				F504C893156E9B5C002842A1 /* libCloud.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -860,7 +860,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Source/External\"",
-					"\"$(SRCROOT)/../../Source/External/LiveSDK/bin\"",
 					"\"$(SRCROOT)/../../Source/External/MSLiveSDK/bin\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -868,11 +867,6 @@
 				INFOPLIST_FILE = "SimpleDocumentPicker/SimpleDocumentPicker-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../Source/External\"",
-					"\"$(SRCROOT)/../../Source/External/CloudAppSDK/Source/libCloud/Cloud/Third Party/IFUnicodeURL/IDNSDK-1.1.0/lib/win32\"",
-					"\"$(SRCROOT)/../../Source/External/CloudAppSDK/Source/libCloud\"",
-					"\"$(SRCROOT)/../../Source/External/CloudAppSDK/Source/libCloud/Cloud\"",
-					"\"$(SRCROOT)/../../Source/External/Cloud\"",
 					"\"$(SRCROOT)/../../Source/External/CloudAppSDK/Source\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -886,7 +880,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/../../Source/External\"",
-					"\"$(SRCROOT)/../../Source/External/LiveSDK/bin\"",
 					"\"$(SRCROOT)/../../Source/External/MSLiveSDK/bin\"",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
@@ -894,11 +887,6 @@
 				INFOPLIST_FILE = "SimpleDocumentPicker/SimpleDocumentPicker-Info.plist";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/../../Source/External\"",
-					"\"$(SRCROOT)/../../Source/External/CloudAppSDK/Source/libCloud/Cloud/Third Party/IFUnicodeURL/IDNSDK-1.1.0/lib/win32\"",
-					"\"$(SRCROOT)/../../Source/External/CloudAppSDK/Source/libCloud\"",
-					"\"$(SRCROOT)/../../Source/External/CloudAppSDK/Source/libCloud/Cloud\"",
-					"\"$(SRCROOT)/../../Source/External/Cloud\"",
 					"\"$(SRCROOT)/../../Source/External/CloudAppSDK/Source\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";

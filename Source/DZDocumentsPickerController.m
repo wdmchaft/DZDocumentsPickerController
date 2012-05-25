@@ -363,6 +363,7 @@
         {
             cell = [self buildServiceCell:tableView withIndexPath:indexPath];
             NSLog(@"cell = %@",cell.description);
+            
             return cell;
         }
         else if (currentSegment == 1 && indexPath.row == 2)
@@ -396,43 +397,37 @@
 - (DZServiceTableViewCell *)buildServiceCell:(UITableView *)tableView withIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"DZServiceTableViewCell";
-    DZServiceTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    
-    if (cell == nil)
+    DZServiceTableViewCell *serviceCell = (DZServiceTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+
+    if (serviceCell == nil)
     {
-        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"DZServiceTableViewCell" owner:nil options:nil];
-        
-        for(id currentObject in topLevelObjects)
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"DZServiceTableViewCell" owner:self options:nil];
+        for (id currentObject in topLevelObjects)
         {
             if([currentObject isKindOfClass:[DZServiceTableViewCell class]])
             {
-                cell = (DZServiceTableViewCell *)currentObject;
-                [cell setFrame:CGRectMake(0, 0, cell.frame.size.width, cell.frame.size.height)];
-                //[cell setClipsToBounds:YES];
-                break;
+                serviceCell = (DZServiceTableViewCell *)currentObject;
+                [serviceCell setClipsToBounds:YES];
             }
         }
     }
     
     NSString *cloudName = [[DZServicesManager servicesSupported] objectAtIndex:indexPath.row];
-    NSString *cloudImgName = [NSString stringWithFormat:@"logo_%@.png",cloudName];
-    cell.logoImgView.image = [UIImage imageNamed:cloudImgName];
-    //cell.textLabel.text = cloudName;
-    
-    NSLog(@"cloudImgName = %@",cloudImgName);
+    NSString *cloudImgName = [[NSString stringWithFormat:@"logo_%@.png",cloudName] lowercaseString];
+    serviceCell.logoImgView.image = [UIImage imageNamed:cloudImgName];
     
     if ([self checkServiceSupport:indexPath.row])
     {
-        cell.accessoryType = UITableViewCellAccessoryNone;
-        cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+        serviceCell.accessoryType = UITableViewCellAccessoryNone;
+        serviceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
     }
     else
     {
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [cell.logoImgView setAlpha:0.25];
+        serviceCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [serviceCell.logoImgView setAlpha:0.25];
     }
     
-    return cell;
+    return serviceCell;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
