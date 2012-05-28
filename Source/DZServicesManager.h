@@ -23,8 +23,9 @@ NSString *const ServicesTypeArr[7];
 
 @protocol DZServicesManagerDelegate;
 
-@interface DZServicesManager : NSObject <DBRestClientDelegate, CLAPIEngineDelegate, NSURLConnectionDelegate,
-                                            LiveAuthDelegate, LiveOperationDelegate>
+@interface DZServicesManager : NSObject <DBRestClientDelegate, CLAPIEngineDelegate,
+                                            LiveAuthDelegate, LiveOperationDelegate,
+                                            NSURLConnectionDelegate>
 {
     DZAlertCenter *alrtCenter;
     AppDelegate *appDelegate;
@@ -51,6 +52,7 @@ NSString *const ServicesTypeArr[7];
 - (void)loginWithInfo:(NSDictionary *)userInfo;
 
 - (void)loadFilesAtPath:(NSString *)filepath;
+- (void)reloadAtPath:(NSString *)path;
 - (void)downloadFileAtPath:(NSString *)webpath intoLocalPath:(NSString *)localpath;
 - (void)cancelDownloading;
 - (void)logOut;

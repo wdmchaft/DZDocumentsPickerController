@@ -67,6 +67,16 @@
 		F55A00CD156F48E600DB3760 /* DropboxSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5E1B3F3153CFEA300B46440 /* DropboxSDK.framework */; };
 		F55A00CE156F490600DB3760 /* LiveSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F5D8FCC7156E9B2C0007D484 /* LiveSDK.framework */; };
 		F55A00CF156F560400DB3760 /* libCloud.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F504C892156E9B5C002842A1 /* libCloud.a */; };
+		F55CB0811572ED3400897C19 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F55CB07F1572ED2B00897C19 /* QuartzCore.framework */; };
+		F55CB0FC1573063100897C19 /* EGORefreshTableHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = F55CB0C71573063100897C19 /* EGORefreshTableHeaderView.m */; };
+		F55CB0FD1573063100897C19 /* blackArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = F55CB0C91573063100897C19 /* blackArrow.png */; };
+		F55CB0FE1573063100897C19 /* blackArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F55CB0CA1573063100897C19 /* blackArrow@2x.png */; };
+		F55CB0FF1573063100897C19 /* blueArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = F55CB0CB1573063100897C19 /* blueArrow.png */; };
+		F55CB1001573063100897C19 /* blueArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F55CB0CC1573063100897C19 /* blueArrow@2x.png */; };
+		F55CB1011573063100897C19 /* grayArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = F55CB0CD1573063100897C19 /* grayArrow.png */; };
+		F55CB1021573063100897C19 /* grayArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F55CB0CE1573063100897C19 /* grayArrow@2x.png */; };
+		F55CB1031573063100897C19 /* whiteArrow.png in Resources */ = {isa = PBXBuildFile; fileRef = F55CB0CF1573063100897C19 /* whiteArrow.png */; };
+		F55CB1041573063100897C19 /* whiteArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F55CB0D01573063100897C19 /* whiteArrow@2x.png */; };
 		F56BAE4A1550335A0058B1D2 /* logo_box.png in Resources */ = {isa = PBXBuildFile; fileRef = F56BAE481550335A0058B1D2 /* logo_box.png */; };
 		F56BAE4B1550335A0058B1D2 /* logo_box@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F56BAE491550335A0058B1D2 /* logo_box@2x.png */; };
 		F56BAE4E1550373D0058B1D2 /* logo_googledrive.png in Resources */ = {isa = PBXBuildFile; fileRef = F56BAE4C1550373D0058B1D2 /* logo_googledrive.png */; };
@@ -216,6 +226,17 @@
 		F55A00C3156EE31400DB3760 /* DZServiceTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DZServiceTableViewCell.h; sourceTree = "<group>"; };
 		F55A00C4156EE31400DB3760 /* DZServiceTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DZServiceTableViewCell.m; sourceTree = "<group>"; };
 		F55A00C6156EE39D00DB3760 /* DZServiceTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DZServiceTableViewCell.xib; sourceTree = "<group>"; };
+		F55CB07F1572ED2B00897C19 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		F55CB0C61573063100897C19 /* EGORefreshTableHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EGORefreshTableHeaderView.h; path = Classes/View/EGORefreshTableHeaderView.h; sourceTree = "<group>"; };
+		F55CB0C71573063100897C19 /* EGORefreshTableHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EGORefreshTableHeaderView.m; path = Classes/View/EGORefreshTableHeaderView.m; sourceTree = "<group>"; };
+		F55CB0C91573063100897C19 /* blackArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blackArrow.png; sourceTree = "<group>"; };
+		F55CB0CA1573063100897C19 /* blackArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blackArrow@2x.png"; sourceTree = "<group>"; };
+		F55CB0CB1573063100897C19 /* blueArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = blueArrow.png; sourceTree = "<group>"; };
+		F55CB0CC1573063100897C19 /* blueArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "blueArrow@2x.png"; sourceTree = "<group>"; };
+		F55CB0CD1573063100897C19 /* grayArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = grayArrow.png; sourceTree = "<group>"; };
+		F55CB0CE1573063100897C19 /* grayArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "grayArrow@2x.png"; sourceTree = "<group>"; };
+		F55CB0CF1573063100897C19 /* whiteArrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = whiteArrow.png; sourceTree = "<group>"; };
+		F55CB0D01573063100897C19 /* whiteArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "whiteArrow@2x.png"; sourceTree = "<group>"; };
 		F56BAE481550335A0058B1D2 /* logo_box.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_box.png; sourceTree = "<group>"; };
 		F56BAE491550335A0058B1D2 /* logo_box@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo_box@2x.png"; sourceTree = "<group>"; };
 		F56BAE4C1550373D0058B1D2 /* logo_googledrive.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo_googledrive.png; sourceTree = "<group>"; };
@@ -271,6 +292,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F55CB0811572ED3400897C19 /* QuartzCore.framework in Frameworks */,
 				F55A00CF156F560400DB3760 /* libCloud.a in Frameworks */,
 				F55A00CE156F490600DB3760 /* LiveSDK.framework in Frameworks */,
 				F55A00CD156F48E600DB3760 /* DropboxSDK.framework in Frameworks */,
@@ -454,6 +476,7 @@
 		F50F7B9A153CF1B900C14D7B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				F55CB07F1572ED2B00897C19 /* QuartzCore.framework */,
 				F50F7B9B153CF1B900C14D7B /* UIKit.framework */,
 				F50F7B9D153CF1B900C14D7B /* Foundation.framework */,
 				F50F7B9F153CF1B900C14D7B /* CoreGraphics.framework */,
@@ -561,8 +584,35 @@
 				F5D8FCA2156E9A6F0007D484 /* DZEN_Categories */,
 				F5D8FCC4156E9A8A0007D484 /* Reachability.h */,
 				F5D8FCC5156E9A8A0007D484 /* Reachability.m */,
+				F55CB0C31573063100897C19 /* TableViewPullRefresh */,
 			);
 			name = Helpers;
+			sourceTree = "<group>";
+		};
+		F55CB0C31573063100897C19 /* TableViewPullRefresh */ = {
+			isa = PBXGroup;
+			children = (
+				F55CB0C61573063100897C19 /* EGORefreshTableHeaderView.h */,
+				F55CB0C71573063100897C19 /* EGORefreshTableHeaderView.m */,
+				F55CB0C81573063100897C19 /* Resources */,
+			);
+			name = TableViewPullRefresh;
+			path = External/TableViewPullRefresh/EGOTableViewPullRefresh;
+			sourceTree = "<group>";
+		};
+		F55CB0C81573063100897C19 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F55CB0C91573063100897C19 /* blackArrow.png */,
+				F55CB0CA1573063100897C19 /* blackArrow@2x.png */,
+				F55CB0CB1573063100897C19 /* blueArrow.png */,
+				F55CB0CC1573063100897C19 /* blueArrow@2x.png */,
+				F55CB0CD1573063100897C19 /* grayArrow.png */,
+				F55CB0CE1573063100897C19 /* grayArrow@2x.png */,
+				F55CB0CF1573063100897C19 /* whiteArrow.png */,
+				F55CB0D01573063100897C19 /* whiteArrow@2x.png */,
+			);
+			path = Resources;
 			sourceTree = "<group>";
 		};
 		F5C83B1C154E6F2C00456D08 /* Resources */ = {
@@ -719,6 +769,14 @@
 				F55A00C0156EE0F500DB3760 /* Icon_144.png in Resources */,
 				F55A00C1156EE0F500DB3760 /* Icon_512.png in Resources */,
 				F55A00C7156EE39E00DB3760 /* DZServiceTableViewCell.xib in Resources */,
+				F55CB0FD1573063100897C19 /* blackArrow.png in Resources */,
+				F55CB0FE1573063100897C19 /* blackArrow@2x.png in Resources */,
+				F55CB0FF1573063100897C19 /* blueArrow.png in Resources */,
+				F55CB1001573063100897C19 /* blueArrow@2x.png in Resources */,
+				F55CB1011573063100897C19 /* grayArrow.png in Resources */,
+				F55CB1021573063100897C19 /* grayArrow@2x.png in Resources */,
+				F55CB1031573063100897C19 /* whiteArrow.png in Resources */,
+				F55CB1041573063100897C19 /* whiteArrow@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -774,6 +832,7 @@
 				F504CC63156E9B9A002842A1 /* SBJsonTokeniser.m in Sources */,
 				F504CC64156E9B9A002842A1 /* SBJsonWriter.m in Sources */,
 				F55A00C5156EE31400DB3760 /* DZServiceTableViewCell.m in Sources */,
+				F55CB0FC1573063100897C19 /* EGORefreshTableHeaderView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

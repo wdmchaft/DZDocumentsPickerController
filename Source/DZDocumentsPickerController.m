@@ -14,9 +14,9 @@
 #define LargerRowHeight 75.0
 
 @implementation DZDocumentsPickerController
-@synthesize delegate, tableview, documentType, deviceType, includePhotoLibrary, allowEditing;
+@synthesize delegate, documentType, deviceType, includePhotoLibrary, allowEditing;
 @synthesize contentHeight, sharedFilesList, cloudFilesDict, netReach;
-@synthesize servicesManager, availableServices;
+@synthesize servicesManager, availableServices, cloudPath;
 
 - (id)init
 {
@@ -149,6 +149,20 @@
     }
     else
     {
+        UITableViewController *tableVC = [self buildTableViewControllerWithTitle:[segmentedItems objectAtIndex:currentSegment]];
+        navController = [[UINavigationController alloc] initWithRootViewController:tableVC];
+        navController.navigationBar.tintColor = [UIColor blackColor];
+        navController.navigationBarHidden = NO;
+        //[navController.navigationBar setBackgroundImage:[UIImage imageNamed:@"NavBar_Pattern.png"] forBarMetrics:UIBarMetricsDefault];
+        navController.toolbarHidden = YES;
+        navController.delegate = self;
+        
+        UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelPicker:)];
+        tableVC.navigationItem.rightBarButtonItem = cancelBtn;
+        
+        self.navigationController.navigationBar.delegate = self;
+        [navigationController setViewControllers:[NSArray arrayWithObject:navController]];
+        
         if (currentSegment == 1)
         {
             if (docsTimer)
@@ -165,38 +179,10 @@
             [self performSelectorOnMainThread:@selector(fillUpSharedController) withObject:nil waitUntilDone:YES];
             
             docsTimer = nil;
-            docsTimer = [NSTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(checkOutSharedController) userInfo:nil repeats:YES];
+            docsTimer = [NSTimer scheduledTimerWithTimeInterval:5 target:self selector:@selector(checkOutSharedController:) userInfo:[NSDictionary dictionaryWithObject:tableVC.tableView forKey:@"tableview"] repeats:YES];
             [docsTimer fire];
         }
-        
-        UITableViewController *tableVC = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
-        tableVC.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-        tableVC.title = [segmentedItems objectAtIndex:currentSegment];
-        tableVC.view.backgroundColor = [UIColor whiteColor];
-        tableVC.navigationController.navigationBar.delegate = self;
-        
-        tableVC.tableView.rowHeight = RowHeight;
-        tableVC.tableView.showsVerticalScrollIndicator = YES;
-        tableVC.tableView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
-        tableVC.tableView.delegate = self;
-        tableVC.tableView.dataSource = self;
-        
-        navController = [[UINavigationController alloc] initWithRootViewController:tableVC];
-        navController.navigationBar.tintColor = [UIColor blackColor];
-        navController.navigationBarHidden = NO;
-        //[navController.navigationBar setBackgroundImage:[UIImage imageNamed:@"NavBar_Pattern.png"] forBarMetrics:UIBarMetricsDefault];
-        navController.toolbarHidden = YES;
-        navController.delegate = self;
-        
-        UIBarButtonItem *cancelBtn = [[UIBarButtonItem alloc] initWithTitle:@"Cancel" style:UIBarButtonItemStyleBordered target:self action:@selector(cancelPicker:)];
-        tableVC.navigationItem.rightBarButtonItem = cancelBtn;
-        
-        self.navigationController.navigationBar.delegate = self;
-        [navigationController setViewControllers:[NSArray arrayWithObject:navController]];
     }
-    
-    
-    NSLog(@"[[navigationController viewControllers] count] = %d",[[navigationController viewControllers] count]);
 }
 
 - (void)cancelPicker:(id)sender
@@ -211,10 +197,16 @@
         [delegate dismissPickerController:self];
 }
 
-- (void)checkOutSharedController
+- (void)checkOutSharedController:(NSTimer *)timer
 {
-    [self performSelectorOnMainThread:@selector(fillUpSharedController) withObject:nil waitUntilDone:YES];
-    [tableview reloadData];
+    NSLog(@"%s",__FUNCTION__);
+    
+    if (timer.userInfo)
+    {
+        UITableView *tableview = [timer.userInfo objectForKey:@"tableview"];
+        [self performSelectorOnMainThread:@selector(fillUpSharedController) withObject:nil waitUntilDone:YES];
+        [tableview reloadData];
+    }
 }
 
 - (void)fillUpSharedController
@@ -291,13 +283,12 @@
     else if (currentSegment == 2) nodeCount = [sharedFilesList count];
 	
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    cell.userInteractionEnabled = YES;
-    cell.clipsToBounds = YES;
-    
     if (cell == nil)
     {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
         cell.clearsContextBeforeDrawing = YES;
+        cell.userInteractionEnabled = YES;
+        cell.clipsToBounds = YES;
     }
     
     if (nodeCount > 0)
@@ -362,8 +353,6 @@
         if (currentSegment == 1 && [depthLevel intValue] == 0)
         {
             cell = [self buildServiceCell:tableView withIndexPath:indexPath];
-            NSLog(@"cell = %@",cell.description);
-            
             return cell;
         }
         else if (currentSegment == 1 && indexPath.row == 2)
@@ -394,42 +383,6 @@
     return cell;
 }
 
-- (DZServiceTableViewCell *)buildServiceCell:(UITableView *)tableView withIndexPath:(NSIndexPath *)indexPath
-{
-    static NSString *CellIdentifier = @"DZServiceTableViewCell";
-    DZServiceTableViewCell *serviceCell = (DZServiceTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-
-    if (serviceCell == nil)
-    {
-        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"DZServiceTableViewCell" owner:self options:nil];
-        for (id currentObject in topLevelObjects)
-        {
-            if([currentObject isKindOfClass:[DZServiceTableViewCell class]])
-            {
-                serviceCell = (DZServiceTableViewCell *)currentObject;
-                [serviceCell setClipsToBounds:YES];
-            }
-        }
-    }
-    
-    NSString *cloudName = [[DZServicesManager servicesSupported] objectAtIndex:indexPath.row];
-    NSString *cloudImgName = [[NSString stringWithFormat:@"logo_%@.png",cloudName] lowercaseString];
-    serviceCell.logoImgView.image = [UIImage imageNamed:cloudImgName];
-    
-    if ([self checkServiceSupport:indexPath.row])
-    {
-        serviceCell.accessoryType = UITableViewCellAccessoryNone;
-        serviceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
-    }
-    else
-    {
-        serviceCell.selectionStyle = UITableViewCellSelectionStyleNone;
-        [serviceCell.logoImgView setAlpha:0.25];
-    }
-    
-    return serviceCell;
-}
-
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (currentSegment == 1)
@@ -438,6 +391,9 @@
         {
             NSArray *filesList = [cloudFilesDict objectForKey:depthLevel];
             DZDocument *document = [filesList objectAtIndex:indexPath.row];
+            
+            cloudPath = [NSString stringWithFormat:@"%@/%@",cloudPath,document.name];
+            NSLog(@"cloudPath = %@",cloudPath);
             
             if (servicesManager.currentService == ServiceTypeDropbox)
             {
@@ -448,19 +404,7 @@
                     NSString *fileName = document.name;
                     NSString *name = [fileName stringByReplacingOccurrencesOfString:[NSString stringWithFormat:@".%@",[document.name pathExtension]] withString:@""];
 
-                    UITableViewController *tableVC = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
-                    tableVC.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-                    tableVC.title = name;
-                    tableVC.view.backgroundColor = [UIColor whiteColor];
-                    tableVC.view.tag = [depthLevel intValue]+1;
-                    
-                    tableVC.tableView.rowHeight = RowHeight;
-                    tableVC.tableView.showsVerticalScrollIndicator = YES;
-                    tableVC.tableView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
-                    tableVC.tableView.delegate = self;
-                    tableVC.tableView.dataSource = self;
-                    
-                    vController = tableVC;
+                    tableController = [self buildTableViewControllerWithTitle:name];
                 }
                 else
                 {
@@ -500,28 +444,18 @@
         {
             if ([self isNetworkReachable])
             {
-                UITableViewController *tableVC = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
-                tableVC.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
-                tableVC.view.backgroundColor = [UIColor whiteColor];
-                tableVC.view.tag = [depthLevel intValue]+1;
-                
-                tableVC.tableView.rowHeight = RowHeight;
-                tableVC.tableView.showsVerticalScrollIndicator = YES;
-                tableVC.tableView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
-                tableVC.tableView.delegate = self;
-                tableVC.tableView.dataSource = self;
-                
-                vController = tableVC;
+                NSString *title = [DZServicesManager serviceTypeToString:servicesManager.currentService];
+                tableController = [self buildTableViewControllerWithTitle:title];
                 
                 [self setServicesManager:nil];
                 servicesManager = [[DZServicesManager alloc] initWithDelegate:appDelegate];
                 servicesManager.delegate = self;
                 servicesManager.allowedDocuments = documentType;
-                servicesManager.parentViewController = tableVC.navigationController;
+                servicesManager.parentViewController = tableController.navigationController;
                 servicesManager.currentService = indexPath.row;
                 [servicesManager prepareForLogin];
                 
-                vController.title = [DZServicesManager serviceTypeToString:servicesManager.currentService];
+                cloudPath = @"";
             }
             else
             {
@@ -556,6 +490,67 @@
      */
 }
 
+- (UITableViewController *)buildTableViewControllerWithTitle:(NSString *)title
+{
+    UITableViewController *tableVC = [[UITableViewController alloc] initWithStyle:UITableViewStylePlain];
+    tableVC.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height);
+    tableVC.title = title;
+    tableVC.view.backgroundColor = [UIColor whiteColor];
+    tableVC.view.tag = [depthLevel intValue];
+    
+    tableVC.tableView.rowHeight = RowHeight;
+    tableVC.tableView.showsVerticalScrollIndicator = YES;
+    tableVC.tableView.indicatorStyle = UIScrollViewIndicatorStyleBlack;
+    tableVC.tableView.delegate = self;
+    tableVC.tableView.dataSource = self;
+    
+    CGRect rect = CGRectMake(0.0f, 0.0f - tableVC.tableView.bounds.size.height,
+                             self.view.frame.size.width, tableVC.tableView.bounds.size.height);
+    EGORefreshTableHeaderView *headerView = [[EGORefreshTableHeaderView alloc] initWithFrame:rect andStyle:HeaderStyleLightGray];
+    headerView.delegate = self;
+    [tableVC.tableView addSubview:headerView];
+    refreshHeaderView = headerView;
+    [refreshHeaderView refreshLastUpdatedDate];
+    
+    return tableVC;
+}
+
+- (DZServiceTableViewCell *)buildServiceCell:(UITableView *)tableView withIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"DZServiceTableViewCell";
+    DZServiceTableViewCell *serviceCell = (DZServiceTableViewCell *)[tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    if (serviceCell == nil)
+    {
+        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"DZServiceTableViewCell" owner:self options:nil];
+        for (id currentObject in topLevelObjects)
+        {
+            if([currentObject isKindOfClass:[DZServiceTableViewCell class]])
+            {
+                serviceCell = (DZServiceTableViewCell *)currentObject;
+                [serviceCell setClipsToBounds:YES];
+            }
+        }
+    }
+    
+    NSString *cloudName = [[DZServicesManager servicesSupported] objectAtIndex:indexPath.row];
+    NSString *cloudImgName = [[NSString stringWithFormat:@"logo_%@.png",cloudName] lowercaseString];
+    serviceCell.logoImgView.image = [UIImage imageNamed:cloudImgName];
+    
+    if ([self checkServiceSupport:indexPath.row])
+    {
+        serviceCell.accessoryType = UITableViewCellAccessoryNone;
+        serviceCell.selectionStyle = UITableViewCellSelectionStyleBlue;
+    }
+    else
+    {
+        serviceCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [serviceCell.logoImgView setAlpha:0.25];
+    }
+    
+    return serviceCell;
+}
+
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     return @"";
@@ -572,10 +567,73 @@
     float tableHeight = 0;
     if (deviceType == DeviceTypeiPad) tableHeight = self.contentSizeForViewInPopover.height-(navigationController.navigationBar.frame.size.height*2)-[[UIApplication sharedApplication] statusBarFrame].size.height;
     else tableHeight = self.view.frame.size.height-(navigationController.navigationBar.frame.size.height*2);
-    CGRect tableRect = CGRectMake(vController.view.frame.origin.x, vController.view.frame.origin.y,
+    CGRect tableRect = CGRectMake(tableController.view.frame.origin.x, tableController.view.frame.origin.y,
                                   self.view.frame.size.width, tableHeight);
     
     return tableRect;
+}
+
+#pragma mark -
+#pragma mark Data Source Loading / Reloading Methods
+
+- (void)reloadTableViewDataSource
+{
+    NSLog(@"%s",__FUNCTION__);
+
+    if ([depthLevel intValue] > 1) [servicesManager reloadAtPath:cloudPath];
+    else [servicesManager reloadAtPath:@"/"];
+    
+	isReloading = YES;
+}
+
+- (void)doneLoadingTableViewData
+{
+    NSLog(@"%s",__FUNCTION__);
+	//model should call this when its done loading
+	isReloading = NO;
+    
+    UITableViewController *tableVC = (UITableViewController *)[navController.viewControllers safeObjectAtIndex:[depthLevel intValue]];
+	[refreshHeaderView egoRefreshScrollViewDataSourceDidFinishedLoading:tableVC.tableView];
+}
+
+
+#pragma mark -
+#pragma mark UIScrollViewDelegate Methods
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{	
+	//NSLog(@"%s",__FUNCTION__);
+	[refreshHeaderView egoRefreshScrollViewDidScroll:scrollView];
+    
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+	//NSLog(@"%s",__FUNCTION__);
+	[refreshHeaderView egoRefreshScrollViewDidEndDragging:scrollView];
+}
+
+
+#pragma mark -
+#pragma mark EGORefreshTableHeaderDelegate Methods
+
+- (void)egoRefreshTableHeaderDidTriggerRefresh:(EGORefreshTableHeaderView *)view
+{
+    NSLog(@"%s",__FUNCTION__);
+	[self reloadTableViewDataSource];
+}
+
+- (BOOL)egoRefreshTableHeaderDataSourceIsLoading:(EGORefreshTableHeaderView *)view
+{
+	NSLog(@"%s",__FUNCTION__);
+	return isReloading;
+}
+
+- (NSDate *)egoRefreshTableHeaderDataSourceLastUpdated:(EGORefreshTableHeaderView *)view
+{
+    NSLog(@"%s",__FUNCTION__);
+	return [NSDate date];
+	
 }
 
 #pragma mark - UINavigationControllerDelegate Methods
@@ -588,29 +646,37 @@
         {
             [cloudFilesDict removeObjectForKey:depthLevel];
             depthLevel = [NSNumber numberWithInt:[depthLevel intValue]-1];
+            
             NSLog(@"PopItem && depthLevel = %d",[depthLevel intValue]);
             NSLog(@"[cloudFilesDict count] = %d",[cloudFilesDict count]);
+            
+            NSArray *arr = [cloudPath componentsSeparatedByCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"/"]];
+            NSRange rangeOfSubstring = [cloudPath rangeOfString:[arr lastObject]];
+            if(rangeOfSubstring.location != NSNotFound)
+                cloudPath = [cloudPath substringToIndex:rangeOfSubstring.location];
+            else cloudPath = @"/";
+            
+            UITableViewController *tableVC = (UITableViewController *)[navController.viewControllers safeObjectAtIndex:[depthLevel intValue]];
+            for (UIView *view in tableVC.view.subviews)
+            {
+                if ([view isKindOfClass:[EGORefreshTableHeaderView class]])
+                {
+                    refreshHeaderView = (EGORefreshTableHeaderView *)view;
+                }
+            }
+            
+            NSLog(@"cloudPath = %@",cloudPath);
         }
         else NSLog(@"PushItem");
     }
     
-    //Deselect Table Row / after "back" button
-    if ([depthLevel intValue] == 0)
+    for (UIView *view in viewController.view.subviews)
     {
-        NSArray *selectedRows = [tableview indexPathsForSelectedRows];
-        for (int i = 0; i < [selectedRows count]; i++) [tableview deselectRowAtIndexPath:[selectedRows objectAtIndex:i] animated:YES];
-    }
-    else
-    {
-        for (UIView *view in viewController.view.subviews)
+        if ([view isKindOfClass:[UITableView class]])
         {
-            if ([view isKindOfClass:[UITableView class]])
-            {
-                NSLog(@"Table found!!");
-                UITableView *aTable = (UITableView *)view;
-                NSArray *selectedRows = [aTable indexPathsForSelectedRows];
-                for (int i = 0; i < [selectedRows count]; i++) [aTable deselectRowAtIndexPath:[selectedRows objectAtIndex:i] animated:YES];
-            }
+            UITableView *aTable = (UITableView *)view;
+            NSArray *selectedRows = [aTable indexPathsForSelectedRows];
+            for (int i = 0; i < [selectedRows count]; i++) [aTable deselectRowAtIndexPath:[selectedRows objectAtIndex:i] animated:YES];
         }
     }
 }
@@ -679,18 +745,28 @@
         
     }
     
-    depthLevel = [NSNumber numberWithInt:[depthLevel intValue]+1];
-    [cloudFilesDict setObject:files forKey:depthLevel];
-    vController.view.tag = [depthLevel intValue];
-    [navController pushViewController:vController animated:YES];
-    
-    NSLog(@"depthLevel = %d",[depthLevel intValue]);
-    
-    if (depthLevel == [NSNumber numberWithInt:1])
+    if (!isReloading)
     {
-        UIBarButtonItem *logoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStyleDone target:manager action:@selector(logOut)];
-        [logoutButton setTintColor:[UIColor colorWithRed:125/255.0 green:170/255.0 blue:255/255.0 alpha:1.0]];
-        [vController.navigationItem setRightBarButtonItem:logoutButton animated:YES];
+        depthLevel = [NSNumber numberWithInt:[depthLevel intValue]+1];
+        [cloudFilesDict setObject:files forKey:depthLevel];
+        tableController.view.tag = [depthLevel intValue];
+        [navController pushViewController:tableController animated:YES];
+        
+        NSLog(@"depthLevel = %d",[depthLevel intValue]);
+        
+        if (depthLevel == [NSNumber numberWithInt:1])
+        {
+            UIBarButtonItem *logoutButton = [[UIBarButtonItem alloc] initWithTitle:@"Log Out" style:UIBarButtonItemStyleDone target:manager action:@selector(logOut)];
+            [logoutButton setTintColor:[UIColor colorWithRed:125/255.0 green:170/255.0 blue:255/255.0 alpha:1.0]];
+            [tableController.navigationItem setRightBarButtonItem:logoutButton animated:YES];
+        }
+    }
+    else
+    {
+        [cloudFilesDict setObject:files forKey:depthLevel];
+        UITableViewController *tableVC = (UITableViewController *)[navController.viewControllers safeObjectAtIndex:[depthLevel intValue]];
+        [tableVC.tableView reloadData];
+        [self doneLoadingTableViewData];
     }
 }
 
@@ -749,7 +825,6 @@
     {
         
     }
-    
     
     UITableViewController *tableVC = (UITableViewController *)[navController.viewControllers objectAtIndex:0];
     NSArray *cells = [tableVC.tableView visibleCells];
@@ -813,9 +888,6 @@
 {
     [super didReceiveMemoryWarning];
 }
-
-
-
 
 
 @end

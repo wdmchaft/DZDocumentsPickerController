@@ -88,7 +88,7 @@ NSString *const ServicesTypeArr[] = {@"Dropbox",@"CloudApp",@"iCloud",@"GoogleDr
             [[NSUserDefaults standardUserDefaults] setObject:userInfo forKey:@"appcloud_login_info"];
             [[NSUserDefaults standardUserDefaults] synchronize];
             
-            [[self cloudappClient] getItemListStartingAtPage:1 itemsPerPage:15 userInfo:nil];
+            [[self cloudappClient] getItemListStartingAtPage:1 itemsPerPage:100 userInfo:nil];
             [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
         }
     }
@@ -134,6 +134,21 @@ NSString *const ServicesTypeArr[] = {@"Dropbox",@"CloudApp",@"iCloud",@"GoogleDr
     }
     
     [UIApplication sharedApplication].networkActivityIndicatorVisible = YES;
+}
+
+- (void)reloadAtPath:(NSString *)path
+{
+    NSLog(@"%s",__FUNCTION__);
+    
+    if (self.currentService == ServiceTypeDropbox)
+    {
+        NSLog(@"path : %@",path);
+        [[self dropboxClient] loadMetadata:path];
+    }
+    else if (self.currentService == ServiceTypeCloudApp)
+    {
+        [[self cloudappClient] getItemListStartingAtPage:1 itemsPerPage:100 userInfo:nil];
+    }
 }
 
 - (void)downloadFileAtPath:(NSString *)webpath intoLocalPath:(NSString *)localpath
@@ -345,14 +360,7 @@ NSString *const ServicesTypeArr[] = {@"Dropbox",@"CloudApp",@"iCloud",@"GoogleDr
 - (void)itemListRetrievalSucceeded:(NSArray *)items connectionIdentifier:(NSString *)connectionIdentifier userInfo:(id)userInfo
 {
     NSMutableArray *clFilesList = [[NSMutableArray alloc] init];
-    
-    /*
-     @synthesize name = _name, type = _type, contentURL = _contentURL, mimeType = _mimeType,
-     viewCount = _viewCount, remoteURL = _remoteURL,  href = _href, URL = _URL, iconURL = _iconURL,
-     icon = _icon, trashed = _trashed, private = _private, createdAt = _createdAt,
-     updatedAt = _updatedAt, deletedAt = _deletedAt;
-     */
-    
+
     for (int i = 0; i < [items count]; i++)
     {
         CLWebItem *fileMetaData = [items objectAtIndex:i];

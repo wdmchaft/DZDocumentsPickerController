@@ -16,6 +16,8 @@
 #import "DZDocument.h"
 #import "DZAlertCenter.h"
 
+#import "EGORefreshTableHeaderView.h"
+
 #import <dispatch/dispatch.h>
 #import "Reachability.h"
 
@@ -25,17 +27,21 @@ enum DevicesType {DeviceTypeiPod = 0, DeviceTypeiPhone = 1, DeviceTypeiPad = 2};
 typedef enum DevicesType DeviceType;
 
 @interface DZDocumentsPickerController : UIViewController <UINavigationControllerDelegate, UIImagePickerControllerDelegate,
-                                                            UITableViewDelegate, UITableViewDataSource, DZServicesManagerDelegate>
+                                                            UITableViewDelegate, UITableViewDataSource, UIScrollViewDelegate,
+                                                            EGORefreshTableHeaderDelegate, DZServicesManagerDelegate>
 {
     AppDelegate *appDelegate;
     DZAlertCenter *alrtCenter;
     
+    EGORefreshTableHeaderView *refreshHeaderView;
+    
     UINavigationController *navigationController;
     UINavigationController *navController;
-    UIViewController *vController;
+    UITableViewController *tableController;
     NSMutableArray *segmentedItems;
         
     int currentSegment;
+    BOOL isReloading;
     BOOL isDownloading;
     NSNumber *depthLevel;
     
@@ -47,12 +53,11 @@ typedef enum DevicesType DeviceType;
 @property (nonatomic, assign) DeviceType deviceType;
 @property BOOL includePhotoLibrary;
 @property BOOL allowEditing;
-
-@property (nonatomic, strong) UITableView *tableview;
 @property float contentHeight;
 
 @property (nonatomic, strong) DZServicesManager *servicesManager;
 @property (nonatomic, strong) NSArray *availableServices;
+@property (nonatomic, strong) NSString *cloudPath;
 
 @property (nonatomic, strong) NSMutableArray *sharedFilesList;
 @property (nonatomic, strong) NSMutableDictionary *cloudFilesDict;
@@ -62,6 +67,9 @@ typedef enum DevicesType DeviceType;
 - (void)segmentAction:(id)sender;
 - (void)cancelPicker:(id)sender;
 - (void)fillUpSharedController;
+
+- (void)reloadTableViewDataSource;
+- (void)doneLoadingTableViewData;
 
 @end
 

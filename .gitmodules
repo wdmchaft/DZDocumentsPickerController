@@ -10,3 +10,6 @@
 [submodule "Source/External/DZEN_Categories"]
 	path = Source/External/DZEN_Categories
 	url = git@github.com:DZen-Interaktiv/DZEN_Categories.git
+[submodule "Source/External/TableViewPullRefresh"]
+	path = Source/External/TableViewPullRefresh
+	url = git@github.com:dzenbot/EGOTableViewPullRefresh.git
